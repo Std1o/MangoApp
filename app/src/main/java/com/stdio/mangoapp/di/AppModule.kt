@@ -3,6 +3,7 @@ package com.stdio.mangoapp.di
 import com.stdio.mangoapp.data.MainRepository
 import com.stdio.mangoapp.data.MainService
 import com.stdio.mangoapp.data.RemoteDataSource
+import com.stdio.mangoapp.domain.usecases.CheckAuthCodeUseCase
 import com.stdio.mangoapp.presentation.viewmodel.AuthViewModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -13,7 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 val viewModelModule = module {
-    viewModel { AuthViewModel(get()) }
+    viewModel { AuthViewModel(get(), get()) }
 }
 
 val appModule = module {
@@ -48,6 +49,8 @@ val appModule = module {
     fun provideRepository(remoteDataSource: RemoteDataSource) =
         MainRepository(remoteDataSource)
 
+    fun provideCheckAuthCodeUseCase(repository: MainRepository) = CheckAuthCodeUseCase(repository)
+
     single { providesBaseUrl() }
     single {provideHttpLoggingInterceptor()}
     factory {provideHttpClient(get())}
@@ -55,6 +58,7 @@ val appModule = module {
     single { provideMainService(get()) }
     single { provideRemoteDataSource(get()) }
     single { provideRepository(get()) }
+    single { provideCheckAuthCodeUseCase(get()) }
 }
 
 val allModules = viewModelModule + appModule

@@ -2,4 +2,7 @@
     <string name="app_name">MangoApp</string>
     <string name="phone_number">Номер телефона</string>
     <string name="get_auth_code">Получить код</string>
+    <string name="invalid_sms_code">Код подтверждения должен состоять из 6 цифр</string>
+    <string name="sms_code">Код из смс</string>
+    <string name="sign_in">Войти</string>
 </resources>

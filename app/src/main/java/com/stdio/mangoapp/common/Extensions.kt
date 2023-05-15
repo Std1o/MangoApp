@@ -103,3 +103,5 @@ fun <T> StateFlow<DataState<T>>.subscribeInUI(
         }
     }.launchWhenStartedCollect(dialogFragment.lifecycleScope)
 }
+
+fun String.handlePhone() = this.replace(" ", "").replace("-", "")
