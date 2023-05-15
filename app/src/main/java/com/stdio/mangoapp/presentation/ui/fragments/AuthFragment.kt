@@ -12,6 +12,7 @@ import com.stdio.mangoapp.databinding.FragmentAuthBinding
 import com.stdio.mangoapp.presentation.viewmodel.AuthViewModel
 import me.phonemask.lib.PhoneNumberKit
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.Locale
 
 class AuthFragment : Fragment(R.layout.fragment_auth) {
 
@@ -26,7 +27,7 @@ class AuthFragment : Fragment(R.layout.fragment_auth) {
                 .build()
             //PhoneNumberKit.ASSET_FILE_NAME = ""
 
-            phoneNumberKit.attachToInput(phoneInputLayout, "tr")
+            phoneNumberKit.attachToInput(phoneInputLayout, Locale.getDefault().language)
             phoneNumberKit.setupCountryPicker(requireActivity() as AppCompatActivity, searchEnabled = true)
             btnSend.setOnClickListener {
                 viewModel.sendPhone(etPhone.text.toString())
