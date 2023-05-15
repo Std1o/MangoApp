@@ -29,14 +29,14 @@ class AuthFragment : Fragment(R.layout.fragment_auth) {
             val phoneNumberKit = PhoneNumberKit.Builder(requireContext())
                 .setIconEnabled(true)
                 .build()
-            //PhoneNumberKit.ASSET_FILE_NAME = ""
 
             phoneNumberKit.attachToInput(phoneInputLayout, Locale.getDefault().language)
             phoneNumberKit.setupCountryPicker(requireActivity() as AppCompatActivity, searchEnabled = true)
             btnSend.setOnClickListener {
-                (viewModel.uiState.value is DataState.Success).let {
-                    if (!it) viewModel.sendPhone(etPhone.text.toString().handlePhone())
-                    else viewModel.checkAuthCode(etPhone.text.toString().handlePhone(), etCode.text.toString())
+                if (viewModel.uiState.value !is DataState.Success){
+                    viewModel.sendPhone(etPhone.text.toString().handlePhone())
+                } else {
+                    viewModel.checkAuthCode(etPhone.text.toString().handlePhone(), etCode.text.toString())
                 }
             }
         }

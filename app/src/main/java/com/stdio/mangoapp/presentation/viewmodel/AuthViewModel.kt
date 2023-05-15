@@ -19,10 +19,6 @@ class AuthViewModel(
     private val _uiState = MutableStateFlow<DataState<CommonAuthData>>(DataState.Initial)
     val uiState: StateFlow<DataState<CommonAuthData>> = _uiState.asStateFlow()
 
-    companion object {
-        private const val MOCK_SMS_CODE = "133337"
-    }
-
     fun sendPhone(phone: String) {
         _uiState.value = DataState.Loading
         viewModelScope.launch {
