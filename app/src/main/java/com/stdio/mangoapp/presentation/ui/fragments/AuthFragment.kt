@@ -18,8 +18,11 @@ class AuthFragment : Fragment(R.layout.fragment_auth) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.button.setOnClickListener {
-            viewModel.sendPhone(binding.editText.text.toString())
+        with(binding) {
+            ccp.registerCarrierNumberEditText(etPhone)
+            btnSend.setOnClickListener {
+                viewModel.sendPhone(ccp.fullNumberWithPlus)
+            }
         }
         subscribeObservers()
     }
