@@ -34,7 +34,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             if (viewModel.uiState.value is DataState.Success) {
                 val action =
                     ProfileFragmentDirections.actionProfileFragmentToProfileEditingFragment(
-                        (viewModel.uiState.value as DataState.Success<ProfileDataResponse>).data.profileData.username
+                        (viewModel.uiState.value as DataState.Success<ProfileDataResponse>).data.profileData
                     )
                 findNavController().navigate(action)
             }

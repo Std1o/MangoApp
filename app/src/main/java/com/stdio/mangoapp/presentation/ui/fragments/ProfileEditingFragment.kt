@@ -35,6 +35,7 @@ class ProfileEditingFragment : Fragment(R.layout.fragment_profile_editing) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         subscribeObservers()
+        setUserDataToViews()
         with(binding) {
             ivUser.setOnClickListener {
                 takePicture.launch("image/*")
@@ -57,7 +58,7 @@ class ProfileEditingFragment : Fragment(R.layout.fragment_profile_editing) {
             }
             btnSave.setOnClickListener {
                 with(viewModel) {
-                    userData.username = args.username
+                    userData.username = args.profileData.username
                     userData.name = etName.text.toString()
                     userData.city = etCity.text.toString()
                     userData.vk = etVk.text.toString()
@@ -65,6 +66,19 @@ class ProfileEditingFragment : Fragment(R.layout.fragment_profile_editing) {
                     userData.status = etStatus.text.toString()
                     updateUser()
                 }
+            }
+        }
+    }
+
+    private fun setUserDataToViews() {
+        with(binding) {
+            with(args.profileData) {
+                etName.setText(name)
+                etBirthday.setText(birthday)
+                etCity.setText(city)
+                etVk.setText(vk)
+                etInstagram.setText(instagram)
+                etStatus.setText(status)
             }
         }
     }
