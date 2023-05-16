@@ -1,5 +1,6 @@
 package com.stdio.mangoapp.presentation.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +15,7 @@ import com.stdio.mangoapp.common.viewBinding
 import com.stdio.mangoapp.databinding.FragmentAuthBinding
 import com.stdio.mangoapp.domain.DataState
 import com.stdio.mangoapp.domain.models.LoginResponse
+import com.stdio.mangoapp.presentation.ui.activity.MainActivity
 import com.stdio.mangoapp.presentation.viewmodel.AuthViewModel
 import me.phonemask.lib.PhoneNumberKit
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -50,7 +52,8 @@ class AuthFragment : Fragment(R.layout.fragment_auth) {
             binding.btnSend.text = getString(R.string.sign_in)
             if (it is LoginResponse) {
                 if (it.isUserExist == true) {
-                    showSnackbar(it.accessToken)
+                    requireActivity().finish()
+                    requireContext().startActivity(Intent(requireContext(), MainActivity::class.java))
                 } else {
                     val action = AuthFragmentDirections
                         .actionAuthFragmentToRegistrationFragment(binding.etPhone.text.toString())
