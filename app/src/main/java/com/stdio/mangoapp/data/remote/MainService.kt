@@ -1,4 +1,4 @@
-package com.stdio.mangoapp.data
+package com.stdio.mangoapp.data.remote
 
 import com.stdio.mangoapp.domain.models.Avatars
 import com.stdio.mangoapp.domain.models.CheckAuthCodeReq

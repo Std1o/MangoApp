@@ -1,9 +1,13 @@
 package com.stdio.mangoapp.domain.models
 
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.Ignore
+import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
+@Entity
 data class ProfileData(
     val name: String,
     val username: String,
@@ -13,11 +17,12 @@ data class ProfileData(
     val instagram: String?,
     val status: String?,
     val avatar: String?,
-    val id: Int,
+    @PrimaryKey val id: Int,
     val last: String?,
     val online: Boolean,
     val created: String,
     val phone: String,
     val completed_task: Int?,
-    val avatars: Avatars?
-) : Parcelable
+) : Parcelable {
+    @Ignore val avatars: Avatars? = null
+}

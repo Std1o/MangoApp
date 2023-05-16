@@ -1,4 +1,4 @@
-package com.stdio.mangoapp.data
+package com.stdio.mangoapp.data.remote
 
 import android.content.Context
 import android.content.Intent

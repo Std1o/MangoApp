@@ -5,16 +5,20 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.stdio.mangoapp.common.TokenManager
-import com.stdio.mangoapp.data.AuthAuthenticator
-import com.stdio.mangoapp.data.AuthInterceptor
+import com.stdio.mangoapp.data.remote.AuthAuthenticator
+import com.stdio.mangoapp.data.remote.AuthInterceptor
 import com.stdio.mangoapp.data.MainRepository
-import com.stdio.mangoapp.data.MainService
-import com.stdio.mangoapp.data.RemoteDataSource
+import com.stdio.mangoapp.data.db.ProfileDataDB
+import com.stdio.mangoapp.data.db.ProfileDao
+import com.stdio.mangoapp.data.remote.MainService
+import com.stdio.mangoapp.data.remote.RemoteDataSource
 import com.stdio.mangoapp.domain.usecases.CheckAuthCodeUseCase
 import com.stdio.mangoapp.presentation.viewmodel.AuthViewModel
 import com.stdio.mangoapp.presentation.viewmodel.ProfileEditingViewModel
 import com.stdio.mangoapp.presentation.viewmodel.ProfileViewModel
 import com.stdio.mangoapp.presentation.viewmodel.RegistrationViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -68,8 +72,12 @@ val appModule = module {
     fun provideRemoteDataSource(mainService: MainService) =
         RemoteDataSource(mainService)
 
-    fun provideRepository(remoteDataSource: RemoteDataSource) =
-        MainRepository(remoteDataSource)
+    fun provideAppDatabase(context: Context) = ProfileDataDB.getDatabase(context, CoroutineScope(SupervisorJob()))
+
+    fun provideDao(database: ProfileDataDB) = database.profileDataDao()
+
+    fun provideRepository(remoteDataSource: RemoteDataSource, profileDao: ProfileDao) =
+        MainRepository(remoteDataSource, profileDao)
 
     fun provideCheckAuthCodeUseCase(repository: MainRepository) = CheckAuthCodeUseCase(repository)
 
@@ -82,7 +90,9 @@ val appModule = module {
     single { provideRetrofit(get(), get()) }
     single { provideMainService(get()) }
     single { provideRemoteDataSource(get()) }
-    single { provideRepository(get()) }
+    single { provideAppDatabase(get()) }
+    single { provideDao(get()) }
+    single { provideRepository(get(), get()) }
     single { provideCheckAuthCodeUseCase(get()) }
 }
 

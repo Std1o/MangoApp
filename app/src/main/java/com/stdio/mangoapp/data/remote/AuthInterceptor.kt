@@ -1,4 +1,4 @@
-package com.stdio.mangoapp.data
+package com.stdio.mangoapp.data.remote
 
 import com.stdio.mangoapp.common.TokenManager
 import kotlinx.coroutines.flow.first
