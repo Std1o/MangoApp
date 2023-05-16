@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 class AuthViewModel(
     private val repository: MainRepository,
     private val checkAuthCodeUseCase: CheckAuthCodeUseCase
-) : ViewModel() {
+) : BaseAuthViewModel() {
 
     private val _uiState = MutableStateFlow<DataState<CommonAuthData>>(DataState.Initial)
     val uiState: StateFlow<DataState<CommonAuthData>> = _uiState.asStateFlow()
@@ -32,6 +32,10 @@ class AuthViewModel(
         _uiState.value = DataState.Loading
         viewModelScope.launch {
             checkAuthCodeUseCase(phone, code).collect {
+                if (it is DataState.Success) {
+                    saveAccessToken(it.data.accessToken)
+                    saveRefreshToken(it.data.refreshToken)
+                }
                 _uiState.value = it
             }
         }

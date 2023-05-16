@@ -15,22 +15,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.java.KoinJavaComponent.inject
 
-class RegistrationViewModel(private val repository: MainRepository) : ViewModel() {
+class RegistrationViewModel(private val repository: MainRepository) : BaseAuthViewModel() {
 
     private val _uiState = MutableStateFlow<DataState<LoginResponse>>(DataState.Initial)
     val uiState: StateFlow<DataState<LoginResponse>> = _uiState.asStateFlow()
-    private val tokenManager: TokenManager by inject(TokenManager::class.java)
-    private val token = MutableLiveData<String?>()
-
-    init {
-        viewModelScope.launch(Dispatchers.IO) {
-            tokenManager.getAccessToken().collect {
-                withContext(Dispatchers.Main) {
-                    token.value = it
-                }
-            }
-        }
-    }
 
     fun register(phone: String, name: String, username: String) {
         _uiState.value = DataState.Loading
@@ -42,18 +30,6 @@ class RegistrationViewModel(private val repository: MainRepository) : ViewModel(
                 }
                 _uiState.value = it
             }
-        }
-    }
-
-    private fun saveAccessToken(token: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            tokenManager.saveAccessToken(token)
-        }
-    }
-
-    private fun saveRefreshToken(token: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            tokenManager.saveRefreshToken(token)
         }
     }
 }
