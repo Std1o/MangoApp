@@ -6,10 +6,12 @@ import android.util.Base64
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.stdio.mangoapp.R
 import com.stdio.mangoapp.common.formatToString
+import com.stdio.mangoapp.common.showSnackbar
 import com.stdio.mangoapp.common.subscribeInUI
 import com.stdio.mangoapp.common.viewBinding
 import com.stdio.mangoapp.databinding.FragmentProfileEditingBinding
@@ -85,7 +87,8 @@ class ProfileEditingFragment : Fragment(R.layout.fragment_profile_editing) {
 
     private fun subscribeObservers() {
         viewModel.uiState.subscribeInUI(this, binding.progressBar) {
-
+            showSnackbar(R.string.saved_successfully)
+            findNavController().popBackStack()
         }
     }
 

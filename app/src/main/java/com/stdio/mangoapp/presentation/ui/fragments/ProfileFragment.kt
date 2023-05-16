@@ -42,6 +42,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         subscribeObservers()
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.getCurrentUser()
+    }
+
     private fun subscribeObservers() {
         viewModel.uiState.subscribeInUI(this, binding.progressBar) {
 

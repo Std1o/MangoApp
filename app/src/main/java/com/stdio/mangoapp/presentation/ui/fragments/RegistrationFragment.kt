@@ -1,5 +1,6 @@
 package com.stdio.mangoapp.presentation.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -11,6 +12,7 @@ import com.stdio.mangoapp.common.showSnackbar
 import com.stdio.mangoapp.common.subscribeInUI
 import com.stdio.mangoapp.common.viewBinding
 import com.stdio.mangoapp.databinding.FragmentRegistrationBinding
+import com.stdio.mangoapp.presentation.ui.activity.MainActivity
 import com.stdio.mangoapp.presentation.viewmodel.RegistrationViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -35,7 +37,8 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration) {
 
     private fun subscribeObservers() {
         viewModel.uiState.subscribeInUI(this, binding.progressBar) {
-            showSnackbar(it.accessToken)
+            requireActivity().finish()
+            requireContext().startActivity(Intent(requireContext(), MainActivity::class.java))
         }
     }
 }

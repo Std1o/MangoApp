@@ -15,4 +15,5 @@
     <string name="instagram">Instagram (Запрещённая организация на территории РФ)</string>
     <string name="status">Статус</string>
     <string name="save">Сохранить</string>
+    <string name="saved_successfully">Успешно сохранено</string>
 </resources>
