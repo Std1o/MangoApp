@@ -61,7 +61,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
     private fun subscribeObservers() {
-        viewModel.profileData.takeWhile { isVisible }.onEach {
+        viewModel.profileData.takeWhile { isAdded }.onEach {
             it?.let {
                 setUserDataToViews(it)
                 binding.btnEdit.setOnClickListener { view->
