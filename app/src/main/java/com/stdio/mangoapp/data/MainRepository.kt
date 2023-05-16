@@ -3,6 +3,7 @@ package com.stdio.mangoapp.data
 import com.stdio.mangoapp.domain.models.CheckAuthCodeReq
 import com.stdio.mangoapp.domain.models.RegisterRequest
 import com.stdio.mangoapp.domain.models.SendPhoneRequest
+import com.stdio.mangoapp.domain.models.UpdateProfileDataRequest
 import kotlinx.coroutines.flow.flow
 
 class MainRepository(private val remoteDataSource: RemoteDataSource) : BaseRepository(){
@@ -21,5 +22,9 @@ class MainRepository(private val remoteDataSource: RemoteDataSource) : BaseRepos
 
     suspend fun getCurrentUser() = flow {
         emit(apiCall { remoteDataSource.getCurrentUser() })
+    }
+
+    suspend fun updateUser(body: UpdateProfileDataRequest) = flow {
+        emit(apiCall { remoteDataSource.updateUser(body) })
     }
 }

@@ -9,5 +9,14 @@
         android:id="@+id/profileFragment"
         android:name="com.stdio.mangoapp.presentation.ui.fragments.ProfileFragment"
         android:label="ProfileFragment"
-        tools:layout="@layout/fragment_profile"/>
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_profileFragment_to_profileEditingFragment"
+            app:destination="@id/profileEditingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileEditingFragment"
+        android:name="com.stdio.mangoapp.presentation.ui.fragments.ProfileEditingFragment"
+        android:label="ProfileEditingFragment"
+        tools:layout="@layout/fragment_profile_editing"/>
 </navigation>
