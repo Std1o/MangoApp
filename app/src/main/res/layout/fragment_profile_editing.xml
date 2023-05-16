@@ -88,7 +88,6 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etVk"
-                    android:inputType="textCapWords"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
@@ -105,7 +104,6 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etInstagram"
-                    android:inputType="textCapWords"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
@@ -122,7 +120,7 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etStatus"
-                    android:inputType="textCapWords"
+                    android:inputType="textCapSentences"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
