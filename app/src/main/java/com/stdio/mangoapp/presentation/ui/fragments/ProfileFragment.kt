@@ -11,10 +11,12 @@ import com.stdio.mangoapp.R
 import com.stdio.mangoapp.common.handlePhone
 import com.stdio.mangoapp.common.showSnackbar
 import com.stdio.mangoapp.common.subscribeInUI
+import com.stdio.mangoapp.common.toDate
 import com.stdio.mangoapp.common.viewBinding
 import com.stdio.mangoapp.databinding.FragmentAuthBinding
 import com.stdio.mangoapp.databinding.FragmentProfileBinding
 import com.stdio.mangoapp.domain.DataState
+import com.stdio.mangoapp.domain.mappers.DateToZodiacSignMapper
 import com.stdio.mangoapp.domain.models.LoginResponse
 import com.stdio.mangoapp.domain.models.ProfileData
 import com.stdio.mangoapp.domain.models.ProfileDataResponse
@@ -23,6 +25,7 @@ import com.stdio.mangoapp.presentation.viewmodel.ProfileViewModel
 import kotlinx.coroutines.flow.first
 import me.phonemask.lib.PhoneNumberKit
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.Date
 import java.util.Locale
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
@@ -54,7 +57,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                     .into(ivUser)
                 tvName.text = getString(R.string.name_, name)
                 tvUsername.text = getString(R.string.username_, username)
-                tvBirthday.text = getString(R.string.birthday_, birthday)
+                val zodiac = DateToZodiacSignMapper().map(profileData.birthday?.toDate("yyyy-MM-dd") ?: Date())
+                tvBirthday.text = getString(R.string.birthday_, "$birthday ($zodiac)")
                 tvCity.text = getString(R.string.city_, city)
                 tvVk.text = getString(R.string.vk_, vk)
                 tvInstagram.text = getString(R.string.instagram_, instagram)
