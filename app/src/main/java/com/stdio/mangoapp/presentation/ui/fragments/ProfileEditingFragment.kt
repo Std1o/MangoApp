@@ -1,13 +1,22 @@
 package com.stdio.mangoapp.presentation.ui.fragments
 
+import android.R.attr.label
+import android.R.attr.text
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Base64
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.stdio.mangoapp.R
 import com.stdio.mangoapp.common.formatToString
@@ -17,11 +26,9 @@ import com.stdio.mangoapp.common.viewBinding
 import com.stdio.mangoapp.databinding.FragmentProfileEditingBinding
 import com.stdio.mangoapp.domain.models.AvatarUploadingRequest
 import com.stdio.mangoapp.presentation.viewmodel.ProfileEditingViewModel
-import com.stdio.mangoapp.presentation.viewmodel.ProfileViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.IOException
 import java.util.Date
-import java.util.UUID
 
 
 class ProfileEditingFragment : Fragment(R.layout.fragment_profile_editing) {
@@ -31,7 +38,22 @@ class ProfileEditingFragment : Fragment(R.layout.fragment_profile_editing) {
     private val args: ProfileEditingFragmentArgs by navArgs()
 
     private val takePicture = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        viewModel.userData.avatar = AvatarUploadingRequest(UUID.randomUUID().toString(), getBase64FromUri(uri!!))
+        val fileName = DocumentFile.fromSingleUri(requireContext(), uri!!)?.name
+        val base64 = getBase64FromUri(uri)
+        setClipboard(requireContext(), base64)
+        viewModel.userData.avatar = AvatarUploadingRequest(fileName!!, base64)
+    }
+
+    private fun setClipboard(context: Context, text: String) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+            val clipboard =
+                context.getSystemService(Context.CLIPBOARD_SERVICE) as android.text.ClipboardManager
+            clipboard.text = text
+        } else {
+            val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clip = ClipData.newPlainText("Copied Text", text)
+            clipboard.setPrimaryClip(clip)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -75,6 +97,11 @@ class ProfileEditingFragment : Fragment(R.layout.fragment_profile_editing) {
     private fun setUserDataToViews() {
         with(binding) {
             with(args.profileData) {
+                Glide
+                    .with(requireContext())
+                    .load(avatar)
+                    .placeholder(R.drawable.avatar_placeholder)
+                    .into(ivUser)
                 etName.setText(name)
                 etBirthday.setText(birthday)
                 etCity.setText(city)

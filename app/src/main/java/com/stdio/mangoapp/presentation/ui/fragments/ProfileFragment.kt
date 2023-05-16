@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.stdio.mangoapp.R
 import com.stdio.mangoapp.common.handlePhone
 import com.stdio.mangoapp.common.showSnackbar
@@ -46,6 +47,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private fun setUserDataToViews(profileData: ProfileData) {
         with(binding) {
             with(profileData) {
+                Glide
+                    .with(requireContext())
+                    .load(avatar)
+                    .placeholder(R.drawable.avatar_placeholder)
+                    .into(ivUser)
                 tvName.text = getString(R.string.name_, name)
                 tvUsername.text = getString(R.string.username_, username)
                 tvBirthday.text = getString(R.string.birthday_, birthday)
