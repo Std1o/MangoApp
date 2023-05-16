@@ -1,5 +1,6 @@
 package com.stdio.mangoapp.common
 
+import android.annotation.SuppressLint
 import android.view.View
 import android.widget.ProgressBar
 import androidx.annotation.StringRes
@@ -21,6 +22,8 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.regex.Pattern
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
@@ -149,3 +152,9 @@ fun TextInputLayout.isNotEmpty(): Boolean {
     }
     return false
 }
+
+@SuppressLint("SimpleDateFormat")
+fun String.toDate(pattern: String): Date? = SimpleDateFormat(pattern).parse(this)
+
+@SuppressLint("SimpleDateFormat")
+fun Date.formatToString(pattern: String): String? = SimpleDateFormat(pattern).format(this)

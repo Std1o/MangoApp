@@ -9,4 +9,5 @@
     <string name="username">Никнейм</string>
     <string name="error_empty_field">Заполните поле</string>
     <string name="register">Зарегистрироваться</string>
+    <string name="birthday">Дата рождения</string>
 </resources>
