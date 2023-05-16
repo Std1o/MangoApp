@@ -10,4 +10,9 @@
     <string name="error_empty_field">Заполните поле</string>
     <string name="register">Зарегистрироваться</string>
     <string name="birthday">Дата рождения</string>
+    <string name="city">Город</string>
+    <string name="vk">Vk</string>
+    <string name="instagram">Instagram (Запрещённая организация на территории РФ)</string>
+    <string name="status">Статус</string>
+    <string name="save">Сохранить</string>
 </resources>
