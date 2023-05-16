@@ -1,5 +1,6 @@
 package com.stdio.mangoapp.data
 
+import com.stdio.mangoapp.common.Utils
 import com.stdio.mangoapp.domain.DataState
 import retrofit2.Response
 
@@ -15,7 +16,7 @@ open class BaseRepository {
                 }
                 return DataState.Empty(response.code())
             }
-            val errorMessage = response.message()
+            val errorMessage = Utils.encodeErrorCode(response.errorBody())
             return error(errorMessage, response.code())
         } catch (e: Exception) {
             return error(e.message ?: " ", -1)

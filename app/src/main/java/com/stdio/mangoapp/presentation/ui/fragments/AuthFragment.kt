@@ -5,6 +5,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.stdio.mangoapp.R
 import com.stdio.mangoapp.common.handlePhone
 import com.stdio.mangoapp.common.showSnackbar
@@ -48,10 +49,12 @@ class AuthFragment : Fragment(R.layout.fragment_auth) {
             binding.codeInputLayout.isVisible = true
             binding.btnSend.text = getString(R.string.sign_in)
             if (it is SignInResponse) {
-                if (it.isUserExist) {
+                if (it.isUserExist == true) {
                     showSnackbar(it.accessToken)
                 } else {
-                    showSnackbar("Need to reg")
+                    val action = AuthFragmentDirections
+                        .actionAuthFragmentToRegistrationFragment(binding.etPhone.text.toString())
+                    findNavController().navigate(action)
                 }
             }
         }

@@ -4,6 +4,7 @@ import android.view.View
 import android.widget.ProgressBar
 import androidx.annotation.StringRes
 import androidx.core.view.isVisible
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.DefaultLifecycleObserver
@@ -13,11 +14,14 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputLayout
+import com.stdio.mangoapp.R
 import com.stdio.mangoapp.domain.DataState
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import java.util.regex.Pattern
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -105,3 +109,43 @@ fun <T> StateFlow<DataState<T>>.subscribeInUI(
 }
 
 fun String.handlePhone() = this.replace(" ", "").replace("-", "")
+
+fun TextInputLayout.isValidUsername(): Boolean {
+    val inputLayout = this@isValidUsername
+    val context = inputLayout.context
+    inputLayout.editText?.doOnTextChanged { _, _, _, _ ->
+        inputLayout.error = null
+    }
+    editText?.let {
+        return if (!USERNAME_PATTERN.matcher(it.text).matches()) {
+            inputLayout.error = context.getString(R.string.invalid_sms_code)
+            false
+        } else {
+            inputLayout.error = null
+            true
+        }
+    }
+    return false
+}
+
+val USERNAME_PATTERN: Pattern = Pattern.compile(
+("[a-zA-Z0-9][a-zA-Z0-9\\-\\_]{1,25}")
+)
+
+fun TextInputLayout.isNotEmpty(): Boolean {
+    val inputLayout = this@isNotEmpty
+    val context = inputLayout.context
+    inputLayout.editText?.doOnTextChanged { _, _, _, _ ->
+        inputLayout.error = null
+    }
+    editText?.let {
+        return if (it.text.isEmpty()) {
+            inputLayout.error = context.getString(R.string.error_empty_field)
+            false
+        } else {
+            inputLayout.error = null
+            true
+        }
+    }
+    return false
+}

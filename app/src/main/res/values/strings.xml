@@ -5,4 +5,8 @@
     <string name="invalid_sms_code">Код подтверждения должен состоять из 6 цифр</string>
     <string name="sms_code">Код из смс</string>
     <string name="sign_in">Войти</string>
+    <string name="name">Имя</string>
+    <string name="username">Никнейм</string>
+    <string name="error_empty_field">Заполните поле</string>
+    <string name="register">Зарегистрироваться</string>
 </resources>
