@@ -15,6 +15,7 @@ import com.stdio.mangoapp.databinding.FragmentAuthBinding
 import com.stdio.mangoapp.databinding.FragmentProfileBinding
 import com.stdio.mangoapp.domain.DataState
 import com.stdio.mangoapp.domain.models.LoginResponse
+import com.stdio.mangoapp.domain.models.ProfileData
 import com.stdio.mangoapp.domain.models.ProfileDataResponse
 import com.stdio.mangoapp.presentation.viewmodel.AuthViewModel
 import com.stdio.mangoapp.presentation.viewmodel.ProfileViewModel
@@ -30,7 +31,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.button.setOnClickListener {
+        binding.btnEdit.setOnClickListener {
             if (viewModel.uiState.value is DataState.Success) {
                 val action =
                     ProfileFragmentDirections.actionProfileFragmentToProfileEditingFragment(
@@ -42,6 +43,20 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         subscribeObservers()
     }
 
+    private fun setUserDataToViews(profileData: ProfileData) {
+        with(binding) {
+            with(profileData) {
+                tvName.text = getString(R.string.name_, name)
+                tvUsername.text = getString(R.string.username_, username)
+                tvBirthday.text = getString(R.string.birthday_, birthday)
+                tvCity.text = getString(R.string.city_, city)
+                tvVk.text = getString(R.string.vk_, vk)
+                tvInstagram.text = getString(R.string.instagram_, instagram)
+                tvStatus.text = getString(R.string.status_, status)
+            }
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         viewModel.getCurrentUser()
@@ -49,7 +64,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private fun subscribeObservers() {
         viewModel.uiState.subscribeInUI(this, binding.progressBar) {
-
+            setUserDataToViews(it.profileData)
         }
     }
 }

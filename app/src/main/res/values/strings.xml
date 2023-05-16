@@ -16,4 +16,12 @@
     <string name="status">Статус</string>
     <string name="save">Сохранить</string>
     <string name="saved_successfully">Успешно сохранено</string>
+    <string name="name_">Имя: %s</string>
+    <string name="username_">Никнейм: %s</string>
+    <string name="birthday_">Дата рождения: %s</string>
+    <string name="city_">Город: %s</string>
+    <string name="vk_">Vk: %s</string>
+    <string name="instagram_">Instagram (Запрещённая организация на территории РФ): %s</string>
+    <string name="status_">Статус: %s</string>
+    <string name="edit">Редактировать</string>
 </resources>
