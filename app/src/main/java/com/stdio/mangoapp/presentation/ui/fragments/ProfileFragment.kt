@@ -10,10 +10,12 @@ import com.bumptech.glide.Glide
 import com.stdio.mangoapp.R
 import com.stdio.mangoapp.common.Constants.DATE_FORMAT
 import com.stdio.mangoapp.common.launchWhenStartedCollect
+import com.stdio.mangoapp.common.showSnackbar
 import com.stdio.mangoapp.common.subscribeInUI
 import com.stdio.mangoapp.common.toDate
 import com.stdio.mangoapp.common.viewBinding
 import com.stdio.mangoapp.databinding.FragmentProfileBinding
+import com.stdio.mangoapp.domain.DataState
 import com.stdio.mangoapp.domain.mappers.DateToZodiacSignMapper
 import com.stdio.mangoapp.domain.models.ProfileData
 import com.stdio.mangoapp.presentation.viewmodel.ProfileViewModel
@@ -68,8 +70,13 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 }
             }
         }.launchWhenStartedCollect(lifecycleScope)
-        viewModel.uiState.subscribeInUI(this, binding.progressBar) {
-            binding.mainContent.isVisible = true
-        }
+        viewModel.uiState.takeWhile { isAdded }.onEach {
+            binding.progressBar.isVisible = it is DataState.Loading
+            if (it is DataState.Success) {
+                binding.mainContent.isVisible = true
+            } else if (it is DataState.Error) {
+                showSnackbar(it.exception)
+            }
+        }.launchWhenStartedCollect(lifecycleScope)
     }
 }
