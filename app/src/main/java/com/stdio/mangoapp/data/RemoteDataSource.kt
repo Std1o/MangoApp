@@ -11,4 +11,6 @@ class RemoteDataSource(private val mainService: MainService) {
     suspend fun checkAuthCode(body: CheckAuthCodeReq) = mainService.checkAuthCode(body)
 
     suspend fun register(body: RegisterRequest) = mainService.register(body)
+
+    suspend fun getCurrentUser() = mainService.getCurrentUser()
 }

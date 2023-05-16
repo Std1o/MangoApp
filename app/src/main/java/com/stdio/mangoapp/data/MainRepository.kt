@@ -18,4 +18,8 @@ class MainRepository(private val remoteDataSource: RemoteDataSource) : BaseRepos
     suspend fun register(phone: String, name: String, username: String) = flow {
         emit(apiCall { remoteDataSource.register(RegisterRequest(phone, name, username)) })
     }
+
+    suspend fun getCurrentUser() = flow {
+        emit(apiCall { remoteDataSource.getCurrentUser() })
+    }
 }

@@ -12,6 +12,7 @@ import com.stdio.mangoapp.data.MainService
 import com.stdio.mangoapp.data.RemoteDataSource
 import com.stdio.mangoapp.domain.usecases.CheckAuthCodeUseCase
 import com.stdio.mangoapp.presentation.viewmodel.AuthViewModel
+import com.stdio.mangoapp.presentation.viewmodel.ProfileViewModel
 import com.stdio.mangoapp.presentation.viewmodel.RegistrationViewModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -26,6 +27,7 @@ val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "da
 val viewModelModule = module {
     viewModel { AuthViewModel(get(), get()) }
     viewModel { RegistrationViewModel(get()) }
+    viewModel { ProfileViewModel(get()) }
 }
 
 val appModule = module {
