@@ -32,7 +32,7 @@ class AuthViewModel(
         _uiState.value = DataState.Loading
         viewModelScope.launch {
             checkAuthCodeUseCase(phone, code).collect {
-                if (it is DataState.Success) {
+                if (it is DataState.Success && it.data.isUserExist == true) {
                     saveAccessToken(it.data.accessToken)
                     saveRefreshToken(it.data.refreshToken)
                 }

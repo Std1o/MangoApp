@@ -19,6 +19,7 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.stdio.mangoapp.R
+import com.stdio.mangoapp.common.Constants.DATE_FORMAT
 import com.stdio.mangoapp.common.formatToString
 import com.stdio.mangoapp.common.showSnackbar
 import com.stdio.mangoapp.common.subscribeInUI
@@ -62,7 +63,7 @@ class ProfileEditingFragment : Fragment(R.layout.fragment_profile_editing) {
             birthdayInputLayout.editText?.setOnClickListener(onClickListener)
             datePicker.addOnPositiveButtonClickListener {
                 datePicker.selection?.let { date ->
-                    val dateStr = Date(date).formatToString("yyyy-MM-dd")
+                    val dateStr = Date(date).formatToString(DATE_FORMAT)
                     birthdayInputLayout.editText?.setText(dateStr)
                     viewModel.userData.birthday = dateStr
                 }

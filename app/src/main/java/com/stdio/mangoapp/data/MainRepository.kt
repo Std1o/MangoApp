@@ -43,4 +43,8 @@ class MainRepository(
     suspend fun insertProfileData(profileData: ProfileData) {
         profileDao.insert(profileData)
     }
+
+    suspend fun updateProfileData(profileData: ProfileData) {
+        profileDao.update(profileData)
+    }
 }

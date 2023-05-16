@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.stdio.mangoapp.data.MainRepository
 import com.stdio.mangoapp.domain.DataState
 import com.stdio.mangoapp.domain.models.Avatars
+import com.stdio.mangoapp.domain.models.Profile
 import com.stdio.mangoapp.domain.models.UpdateProfileDataRequest
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,8 +14,8 @@ import kotlinx.coroutines.launch
 
 class ProfileEditingViewModel(private val repository: MainRepository) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<DataState<Avatars>>(DataState.Initial)
-    val uiState: StateFlow<DataState<Avatars>> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow<DataState<Profile>>(DataState.Initial)
+    val uiState: StateFlow<DataState<Profile>> = _uiState.asStateFlow()
     val userData = UpdateProfileDataRequest()
 
     fun updateUser() {
@@ -23,8 +24,9 @@ class ProfileEditingViewModel(private val repository: MainRepository) : ViewMode
             repository.updateUser(userData).collect {
                 if (it is DataState.Success) {
                     getCurrentUserAndSave()
+                } else {
+                    _uiState.value = it
                 }
-                _uiState.value = it
             }
         }
     }
@@ -34,7 +36,8 @@ class ProfileEditingViewModel(private val repository: MainRepository) : ViewMode
         viewModelScope.launch {
             repository.getCurrentUser().collect {
                 if (it is DataState.Success) {
-                    repository.insertProfileData(it.data.profileData)
+                    repository.updateProfileData(it.data.profileData)
+                    _uiState.value = it
                 }
             }
         }
