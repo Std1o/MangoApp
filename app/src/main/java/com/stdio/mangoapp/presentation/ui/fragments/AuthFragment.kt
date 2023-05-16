@@ -13,7 +13,7 @@ import com.stdio.mangoapp.common.subscribeInUI
 import com.stdio.mangoapp.common.viewBinding
 import com.stdio.mangoapp.databinding.FragmentAuthBinding
 import com.stdio.mangoapp.domain.DataState
-import com.stdio.mangoapp.domain.models.SignInResponse
+import com.stdio.mangoapp.domain.models.LoginResponse
 import com.stdio.mangoapp.presentation.viewmodel.AuthViewModel
 import me.phonemask.lib.PhoneNumberKit
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -48,7 +48,7 @@ class AuthFragment : Fragment(R.layout.fragment_auth) {
         viewModel.uiState.subscribeInUI(this, binding.progressBar) {
             binding.codeInputLayout.isVisible = true
             binding.btnSend.text = getString(R.string.sign_in)
-            if (it is SignInResponse) {
+            if (it is LoginResponse) {
                 if (it.isUserExist == true) {
                     showSnackbar(it.accessToken)
                 } else {

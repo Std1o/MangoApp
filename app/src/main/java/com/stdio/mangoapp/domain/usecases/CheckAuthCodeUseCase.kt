@@ -4,13 +4,13 @@ import androidx.core.text.isDigitsOnly
 import com.stdio.mangoapp.R
 import com.stdio.mangoapp.data.MainRepository
 import com.stdio.mangoapp.domain.DataState
-import com.stdio.mangoapp.domain.models.SignInResponse
+import com.stdio.mangoapp.domain.models.LoginResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class CheckAuthCodeUseCase(private val repository: MainRepository) {
 
-    suspend operator fun invoke(phone: String, code: String): Flow<DataState<SignInResponse>> {
+    suspend operator fun invoke(phone: String, code: String): Flow<DataState<LoginResponse>> {
         return if (code.length == 6 && code.isDigitsOnly()) {
             repository.checkAuthCode(phone, code)
         } else {

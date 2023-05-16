@@ -1,5 +1,12 @@
 package com.stdio.mangoapp.di
 
+import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
+import com.stdio.mangoapp.common.TokenManager
+import com.stdio.mangoapp.data.AuthAuthenticator
+import com.stdio.mangoapp.data.AuthInterceptor
 import com.stdio.mangoapp.data.MainRepository
 import com.stdio.mangoapp.data.MainService
 import com.stdio.mangoapp.data.RemoteDataSource
@@ -14,6 +21,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
+val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "data_store")
+
 val viewModelModule = module {
     viewModel { AuthViewModel(get(), get()) }
     viewModel { RegistrationViewModel(get()) }
@@ -27,11 +36,18 @@ val appModule = module {
             .setLevel(HttpLoggingInterceptor.Level.BODY)
     }
 
-    fun provideHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient.Builder {
+    fun provideTokenManager(context: Context) = TokenManager(context)
+
+    fun provideAuthInterceptor(tokenManager: TokenManager) = AuthInterceptor(tokenManager)
+
+    fun provideAuthenticator(tokenManager: TokenManager) = AuthAuthenticator(tokenManager)
+
+    fun provideHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor, tokenManager: TokenManager): OkHttpClient.Builder {
         return OkHttpClient.Builder()
             .callTimeout(1, TimeUnit.MINUTES)
             .retryOnConnectionFailure(true)
-            //.addInterceptor(OAuthInterceptor())
+            .addInterceptor(AuthInterceptor(tokenManager))
+            .authenticator(AuthAuthenticator(tokenManager))
             .addInterceptor(httpLoggingInterceptor)
     }
 
@@ -55,7 +71,10 @@ val appModule = module {
 
     single { providesBaseUrl() }
     single {provideHttpLoggingInterceptor()}
-    factory {provideHttpClient(get())}
+    single { provideTokenManager(get()) }
+    single { provideAuthInterceptor(get()) }
+    single { provideAuthenticator(get()) }
+    factory { provideHttpClient(get(), get()) }
     single { provideRetrofit(get(), get()) }
     single { provideMainService(get()) }
     single { provideRemoteDataSource(get()) }
