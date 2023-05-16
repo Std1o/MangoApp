@@ -40,20 +40,7 @@ class ProfileEditingFragment : Fragment(R.layout.fragment_profile_editing) {
     private val takePicture = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         val fileName = DocumentFile.fromSingleUri(requireContext(), uri!!)?.name
         val base64 = getBase64FromUri(uri)
-        setClipboard(requireContext(), base64)
         viewModel.userData.avatar = AvatarUploadingRequest(fileName!!, base64)
-    }
-
-    private fun setClipboard(context: Context, text: String) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-            val clipboard =
-                context.getSystemService(Context.CLIPBOARD_SERVICE) as android.text.ClipboardManager
-            clipboard.text = text
-        } else {
-            val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-            val clip = ClipData.newPlainText("Copied Text", text)
-            clipboard.setPrimaryClip(clip)
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
