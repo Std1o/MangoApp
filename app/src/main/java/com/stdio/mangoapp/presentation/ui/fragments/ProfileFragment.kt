@@ -15,8 +15,10 @@ import com.stdio.mangoapp.databinding.FragmentAuthBinding
 import com.stdio.mangoapp.databinding.FragmentProfileBinding
 import com.stdio.mangoapp.domain.DataState
 import com.stdio.mangoapp.domain.models.LoginResponse
+import com.stdio.mangoapp.domain.models.ProfileDataResponse
 import com.stdio.mangoapp.presentation.viewmodel.AuthViewModel
 import com.stdio.mangoapp.presentation.viewmodel.ProfileViewModel
+import kotlinx.coroutines.flow.first
 import me.phonemask.lib.PhoneNumberKit
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.Locale
@@ -29,7 +31,13 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.button.setOnClickListener {
-            findNavController().navigate(R.id.action_profileFragment_to_profileEditingFragment)
+            if (viewModel.uiState.value is DataState.Success) {
+                val action =
+                    ProfileFragmentDirections.actionProfileFragmentToProfileEditingFragment(
+                        (viewModel.uiState.value as DataState.Success<ProfileDataResponse>).data.profileData.username
+                    )
+                findNavController().navigate(action)
+            }
         }
         subscribeObservers()
     }
