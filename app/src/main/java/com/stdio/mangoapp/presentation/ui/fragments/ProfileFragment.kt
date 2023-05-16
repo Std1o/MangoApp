@@ -2,6 +2,7 @@ package com.stdio.mangoapp.presentation.ui.fragments
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -68,7 +69,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             }
         }.launchWhenStartedCollect(lifecycleScope)
         viewModel.uiState.subscribeInUI(this, binding.progressBar) {
-
+            binding.mainContent.isVisible = true
         }
     }
 }

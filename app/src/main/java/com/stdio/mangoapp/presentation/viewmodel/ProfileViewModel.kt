@@ -23,6 +23,8 @@ class ProfileViewModel(private val repository: MainRepository) : ViewModel() {
             repository.profileData.collect {
                 if (it == null) {
                     getCurrentUser()
+                } else {
+                    _uiState.value = DataState.Success(ProfileDataResponse(it))
                 }
             }
         }
